@@ -3,9 +3,6 @@
 ## Description
 Project template to create a RESTful api using flask. Template can be replicated across multiple servers in order to create a micro service cluster.
 
-#### Requirements
-1) python 3.6.7^
-
 ## Windows Instructions
 
 ### Requirements
