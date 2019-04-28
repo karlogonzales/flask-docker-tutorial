@@ -1,78 +1,67 @@
 # RESTful Flask micro service template
+
 ## Description
-Project template to create a RESTful api using flask and docker
-### Microservices
-
-#### Flask
-The user management will provide the registering, login and authentication function exposed to the user. It will also provide the authentication token used by the UI to communicate with the System Logic service. In addition it will provide the interface for the other services to validate the user’s authentication tokens.  
-
-#### Docker
-The league manager service maps the data of the players with the appropriate user that has selected the player. It takes care of compiling the total amount of points for the players owned by each user.
+Project template to create a RESTful api using flask. Template can be replicated across multiple servers in order to create a micro service cluster.
 
 #### Requirements
 1) python 3.6.7^
 
 ## Windows Instructions
-### Setup Restful Flask
-1) Clone the repository: 
-    ```
-    https://github.com/karlogonzales/flask-docker-tutorial.git
-    ```
-2) Create a service directory and _init_ file
+
+### Requirements
+- Python 3.7 
+- Docker
+
+### Quick Start MacOS
+1) Create virtual env and activate
     ```
     cd <root>
-    mkdir <service-name>
-    type nul > _init_.py
+    python -m venv env
+    source env/bin/activate
     ```
-4) Create a models directory and file
+2) Export Flask settings
     ```
-    mkdir \services\<service-name>\models
-    type nul> \services\models\<model-name>.py
+    export FLASK_APP=sample
+    export FLASK_ENV=development
+    ``` 
+3) Run Flask
     ```
-3) Create python virtual environment and activate:
-    ```
-    python -m venv services\<service-name>
-    services\<service-name>\env\Scripts\activate.bat
+    flask run
     ```
 
-5) Install Flask: 
-    ```
-    (env) pip install flask
-    (env) pip install Flask-RESTful
-    ```
-5) Create basic flask application
     
-    ```
-    from flask import Flask, jsonify
-    from flask_restful import Api
+### Setup Microservices
+1) Replicate sample service
+    Use the sample service to build a working api by adding logic to api.py
+ 
+2) Start Docker
 
-    app = Flask(__name__)
+3) Modify Dockerfile
+    ```
+    FROM python:3.7
+    
+    WORKDIR /app
+    
+    COPY . /app
+    
+    COPY requirements.txt /app
+    
+    RUN pip install -r requirements.txt
+    
+    EXPOSE <port>
+    
+    RUN export FLASK_APP=<service name>
+    
+    RUN flask run
+    ```
+   
+3) Build Docker container
+    ```
+    docker build -t <service name> .
+    ```
+4) Run Container
+    ```
+    docker run -p <exposed port>:<local port> <service name>
+    ```
 
-    api = Api(app)
-    ```
-6) Define api
-    ```
-    # user.py
-    
-    from flask_restful import Resource
-    
-    class User(Resource):
-        def get(self):
-            return {
-                'status': 'ok',
-                'message': 'Hello World'
-            }
-
-    ```
-    
-7) Add route to application in
-    ```
-    # _init_.py
-    
-    from services.template.api.user import User
-    
-    api.add_resource(User, '/api/user')
-    ```
-    
-### Setup Docker
-
+This method can be used to create multiple services within the docker container.
