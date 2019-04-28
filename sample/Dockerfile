@@ -10,6 +10,6 @@ RUN pip install -r requirements.txt
 
 EXPOSE 5000
 
-RUN export FLASK_APP=sample
+ENV FLASK_APP sample
 
 RUN flask run

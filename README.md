@@ -47,7 +47,7 @@ Project template to create a RESTful api using flask. Template can be replicated
     
     EXPOSE <port>
     
-    RUN export FLASK_APP=<service name>
+    ENV FLASK_APP <service name>
     
     RUN flask run
     ```
